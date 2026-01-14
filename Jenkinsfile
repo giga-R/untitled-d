@@ -15,7 +15,7 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                dir('welcome-react') {
+                dir('welcome.react') {
                     sh 'npm install'
                 } // Closes 'dir'
             } // Closes 'steps'
