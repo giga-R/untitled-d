@@ -16,16 +16,18 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 dir('welcome-react') {
-                sh 'npm install'
-            }
-        }
+                    sh 'npm install'
+                } // Closes 'dir'
+            } // Closes 'steps'
+        } // <--- THIS WAS MISSING (Closes 'stage')
 
         stage('Build React App') {
             steps {
                 dir('welcome-react') {
-                sh 'npm run build'
-            }
-        }
+                    sh 'npm run build'
+                } // Closes 'dir'
+            } // Closes 'steps'
+        } // <--- THIS WAS MISSING (Closes 'stage')
     }
 
     post {
