@@ -23,7 +23,7 @@ pipeline {
 
         stage('Build React App') {
             steps {
-                dir('welcome-react') {
+                dir('welcome.react') {
                     sh 'npm run build'
                 } // Closes 'dir'
             } // Closes 'steps'
