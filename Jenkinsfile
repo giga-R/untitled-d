@@ -11,7 +11,7 @@ pipeline {
         stage('Clone Code') {
             steps {
                 git branch: 'main',
-                    url: 'https://github.com/MamthaKSunilkumar/CS8_demo.git'
+                    url: 'https://github.com/giga-R/untitled-d.git'
             }
         }
 
