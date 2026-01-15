@@ -1,41 +1,55 @@
 pipeline {
     agent any
 
-    tools {
-        nodejs 'NodeJS-18'
+    environment {
+        IMAGE_NAME = "react-app"
+        CONTAINER_NAME = "react-vite-container"
     }
 
     stages {
+
         stage('Clone Code') {
             steps {
                 git branch: 'main',
-                    url: 'https://github.com/giga-R/untitled-d.git'
+                    url: 'https://github.com/MamthaKSunilkumar/CS8_demo.git'
             }
         }
 
-        stage('Install Dependencies') {
+        stage('Build Docker Image') {
             steps {
-                dir('welcome.react') {
-                    sh 'npm install'
-                } // Closes 'dir'
-            } // Closes 'steps'
-        } // <--- THIS WAS MISSING (Closes 'stage')
+                sh '''
+                docker build -t $IMAGE_NAME .
+                '''
+            }
+        }
 
-        stage('Build React App') {
+        stage('Stop Old Container') {
             steps {
-                dir('welcome.react') {
-                    sh 'npm run build'
-                } // Closes 'dir'
-            } // Closes 'steps'
-        } // <--- THIS WAS MISSING (Closes 'stage')
+                sh '''
+                docker stop $CONTAINER_NAME || true
+                docker rm $CONTAINER_NAME || true
+                '''
+            }
+        }
+
+        stage('Run Docker Container') {
+            steps {
+                sh '''
+                docker run -d \
+                -p 5173:5173 \
+                --name $CONTAINER_NAME \
+                $IMAGE_NAME
+                '''
+            }
+        }
     }
 
     post {
         success {
-            echo 'React build successful 🎉'
+            echo 'React app deployed using Docker successfully 🎉'
         }
         failure {
-            echo 'Build failed ❌'
+            echo 'Deployment failed ❌'
         }
     }
 }
